@@ -14,4 +14,4 @@ on:
 
 jobs:
   call-workflow:
-    uses: dhis2-sre/gha-workflows/.github/workflows/docker.yaml@master
+    uses: dhis2-sre/gha-workflows/.github/workflows/docker.yaml@feature/github-reusable-workflow-port-issue

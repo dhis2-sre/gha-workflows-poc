@@ -39,7 +39,6 @@ services:
     image: rabbitmq:3-management-alpine
     command: /bin/sh -c 'rabbitmq-diagnostics status -n guest@rabbitmq:5671'
 
-
   support:
     image: busybox:1.34-musl
     depends_on:
