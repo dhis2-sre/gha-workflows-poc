@@ -1,0 +1,17 @@
+name: Tests, build and deploy
+
+on:
+  push:
+    branches:
+      - master
+      - feature/**
+    tags:
+      - v*.*.*
+
+  pull_request:
+
+  workflow_dispatch:
+
+jobs:
+  call-workflow:
+    uses: dhis2-sre/gha-workflows/.github/workflows/docker.yaml@master

@@ -1,0 +1,51 @@
+version: "3.6"
+services:
+  postgresql:
+    image: postgres:13-alpine
+#    ports:
+#      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+
+  postgresql-cli:
+    image: postgres:13-alpine
+    command: /bin/sh -c 'export PGPASSWORD=$POSTGRES_PASSWORD; echo "select 1" | psql -h $DATABASE_HOST -U $POSTGRES_USER $POSTGRES_DB'
+    environment:
+      DATABASE_HOST: ${DATABASE_HOST}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+
+  redis:
+    image: redis:6.2.5-alpine3.14
+    ports:
+      - "6379:6379"
+
+  redis-cli:
+    image: redis:6.2.5-alpine3.14
+    command: /bin/sh -c 'redis-cli -h $REDIS_HOST -p 6379 ping'
+    environment:
+      REDIS_HOST: redis
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  rabbitmq-cli:
+    image: rabbitmq:3-management-alpine
+    command: /bin/sh -c 'rabbitmq-diagnostics status -n guest@rabbitmq:5671'
+
+  support:
+    image: busybox:1.34-musl
+    depends_on:
+      - postgresql
+      - rabbitmq
+      - redis
+
+volumes:
+  instance-manager-database: { }
+  kubernetes-config: { }
